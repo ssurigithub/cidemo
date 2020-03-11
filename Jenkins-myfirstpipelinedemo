@@ -1,0 +1,71 @@
+pipeline{
+    agent any
+    options {timestamps()}
+    
+    stages{
+        stage ("Print Env variables"){
+            steps{
+                echo "$BUILD_ID is the build Id"
+            echo "$BUILD_DISPLAY_NAME is the build display name" 
+            echo "$JOB_NAME is the Job name"
+            echo "$WORKSPACE is the workspace"
+            echo "$BUILD_URL is the build URL"
+            }
+            
+            
+        }
+        stage ("Git Checkout"){
+            steps{
+                git 'https://github.com/ssurigithub/cidemo.git'
+            }
+            
+        }
+        stage ("Build"){
+            steps{
+                echo 'Build the project'
+            sh 'dotnet build -c Release'
+            }
+            
+        }
+        stage ("Tests"){
+            steps{
+                echo 'Execute tests'
+            sh 'dotnet test'
+            }
+            
+        }
+        stage ("publish"){
+            steps{
+                echo 'publish the build'
+            sh 'dotnet publish -c Release -o publish'
+            }
+            
+        }
+        
+    }
+    environment{
+        EMAIL_TO ='ssuridevops@gmail.com'
+    }
+    post{
+
+        always{
+            echo 'always sending this email using default mail plugin'
+            mail to:"${EMAIL_TO}",
+            subject:"${env.JOB_NAME}-${env.BUILD_STATUS}",
+            body:"Please see the job: ${env.JOB_URL} \n Please see the build: ${env.BUILD_URL}console"
+        }
+        success{
+            echo 'sending this email using email ext plugin during success'
+            emailext (
+                subject:"${env.JOB_NAME}-${env.BUILD_STATUS}",
+                mimeType:  'text/html',
+                body:'''${SCRIPT, template="groovy-html.template"}''',
+                to: "${EMAIL_TO}",
+                recipientProviders:[[$class:'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']]
+            )
+        }
+
+        
+    }
+    
+}
