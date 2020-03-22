@@ -3,7 +3,7 @@
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 LABEL user=saravanan role=builder
-WORKDIR /sourcetotest
+WORKDIR /sourcetobuild
 COPY . .
 RUN dotnet build -c Release
 cmd ["/bin/bash"]

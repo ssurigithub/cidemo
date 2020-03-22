@@ -3,7 +3,7 @@
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 LABEL user=saravanan role=publish
-WORKDIR /sourcetotest
+WORKDIR /sourcetopublish
 COPY . .
-RUN dotnet publish --no-build -o /app
+RUN dotnet publish  -o /app
 cmd ["/bin/bash"]

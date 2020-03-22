@@ -5,5 +5,5 @@ FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 LABEL user=saravanan role=tester
 WORKDIR /sourcetotest
 COPY . .
-RUN dotnet test --no-build -l "trx;LogFileName=TestResults.xml"
+RUN dotnet test -l "trx;LogFileName=TestResults.xml"
 cmd ["/bin/bash"]
