@@ -1,0 +1,9 @@
+# run some tests here
+
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+LABEL user=saravanan role=publish
+WORKDIR /sourcetotest
+COPY . .
+RUN dotnet publish --no-build -o /app
+cmd ["/bin/bash"]

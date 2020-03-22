@@ -1,0 +1,9 @@
+# run build the code here
+
+
+FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
+LABEL user=saravanan role=builder
+WORKDIR /sourcetotest
+COPY . .
+RUN dotnet build -c Release
+cmd ["/bin/bash"]

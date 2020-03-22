@@ -41,6 +41,28 @@ pipeline{
             }
             
         }
+
+        stage ("create build folder"){
+            steps{
+                echo "create a folder in the workspace $WORKSPACE"
+                sh 'mkdir -p buildgeneratedArtifacts'
+                
+            }
+        }
+
+        stage ("create a build File"){
+            steps{
+                script{
+                    if(fileExists('buildgeneratedArtifacts')){
+                        sh 'cd buildgeneratedArtifacts'
+                        sh 'dotnet build -h > buildFile.txt'
+                    }
+                    else{
+                        sh 'dotnet build -h > DirectoryNotFound.txt'
+                    }
+                }
+            }
+        }
         
     }
     environment{
@@ -61,6 +83,7 @@ pipeline{
                 mimeType:  'text/html',
                 body:'''${SCRIPT, template="groovy-html.template"}''',
                 to: "${EMAIL_TO}",
+                attachLog: true, attachmentsPattern: 'buildgeneratedArtifacts/buildFile.txt',
                 recipientProviders:[[$class:'CulpritsRecipientProvider'], [$class: 'RequesterRecipientProvider']]
             )
         }
