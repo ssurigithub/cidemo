@@ -6,4 +6,4 @@ LABEL user=saravanan role=builder
 WORKDIR /sourcetobuild
 COPY . .
 RUN dotnet build -c Release
-CMD  cp -R /sourcetobuild /var/jenkins_home/workspace/dockerbuildpipeline/jenkinsOut/sourcetobuild
+CMD  cp -a /sourcetobuild/. /var/jenkins_home/workspace/dockerbuildpipeline/jenkinsOut/sourcetobuild
