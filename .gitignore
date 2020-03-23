@@ -2,3 +2,4 @@ publishOutput
 bin
 obj
 TestResults
+test.sh
