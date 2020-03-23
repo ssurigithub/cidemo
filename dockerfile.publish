@@ -4,6 +4,6 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 LABEL user=saravanan role=publish
 WORKDIR /sourcetopublish
-COPY ./sourcetobuild .
-RUN dotnet publish  -o /app
+COPY /var/jenkins_home/workspace/dockerbuildpipeline/jenkinsOut/sourcetobuild .
+RUN dotnet publish --no-build -o /app
 CMD  cp -R /sourcetopublish /var/jenkins_home/workspace/dockerbuildpipeline/jenkinsOut/sourcetopublish

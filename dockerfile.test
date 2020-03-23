@@ -4,6 +4,6 @@
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1 AS build
 LABEL user=saravanan role=tester
 WORKDIR /sourcetotest
-COPY ./sourcetobuild .
+COPY /var/jenkins_home/workspace/dockerbuildpipeline/jenkinsOut/sourcetobuild .
 RUN dotnet test --no-build -l "trx;LogFileName=TestResults.xml"
 CMD  cp -R /sourcetotest /var/jenkins_home/workspace/dockerbuildpipeline/jenkinsOut/sourcetotest
